@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathToPeace</title>
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #4CAF50;
+            --accent-color: #8BC34A;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --dark-bg: #1B5E20;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-bg));
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .prayer-times {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .prayer-time {
+            background-color: var(--light-bg);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .prayer-time:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .prayer-name {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .prayer-hour {
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        .quote-container {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-left: 4px solid var(--accent-color);
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .ai-chat {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #ai-input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        #ai-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #ai-submit:hover {
+            background-color: var(--dark-bg);
+        }
+
+        #ai-response {
+            background-color: var(--light-bg);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 100px;
+        }
+
+        .spotify-playlists {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .youtube-videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .invite-section {
+            text-align: center;
+            max-width: 500px;
+            margin: 50px auto;
+        }
+
+        #invite-code {
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-size: 1rem;
+        }
+
+        #invite-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        #invite-submit:hover {
+            background-color: var(--dark-bg);
+        }
+
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            background-color: var(--light-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: var(--dark-bg);
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .prayer-times {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .spotify-playlists, .youtube-videos {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Invite Code Section -->
+    <div id="invite-page" class="container invite-section">
+        <header>
+            <h1 class="logo">PathToPeace</h1>
+            <p class="subtitle">Spiritual Guidance and Peace</p>
+        </header>
+        <section>
+            <h2>Access Required</h2>
+            <p>Please enter your invite code to access PathToPeace</p>
+            <input type="text" id="invite-code" placeholder="Enter invite code">
+            <button id="invite-submit">Submit</button>
+            <p id="invite-error" style="color: red; margin-top: 10px;"></p>
+        </section>
+    </div>
+
+    <!-- Main Content (Hidden until invite code is verified) -->
+    <div id="main-content" class="hidden">
+        <header>
+            <h1 class="logo">PathToPeace</h1>
+            <p class="subtitle">Spiritual Guidance and Peace</p>
+        </header>
+
+        <div class="container">
+            <!-- Language Selector -->
+            <section>
+                <h2>Select Language / Sprache auswählen</h2>
+                <div class="language-selector">
+                    <button class="lang-btn active" data-lang="tr">Türkçe</button>
+                    <button class="lang-btn" data-lang="de">Deutsch</button>
+                </div>
+            </section>
+
+            <!-- Prayer Times -->
+            <section id="prayer-section">
+                <h2 data-tr="Namaz Vakitleri" data-de="Gebetszeiten">Namaz Vakitleri</h2>
+                <div class="prayer-times">
+                    <div class="prayer-time">
+                        <div class="prayer-name" data-tr="İmsak" data-de="Fajr">İmsak</div>
+                        <div class="prayer-hour" id="imsak">--:--</div>
+                    </div>
+                    <div class="prayer-time">
+                        <div class="prayer-name" data-tr="Güneş" data-de="Sonnenaufgang">Güneş</div>
+                        <div class="prayer-hour" id="gunes">--:--</div>
+                    </div>
+                    <div class="prayer-time">
+                        <div class="prayer-name" data-tr="Öğle" data-de="Dhuhr">Öğle</div>
+                        <div class="prayer-hour" id="ogle">--:--</div>
+                    </div>
+                    <div class="prayer-time">
+                        <div class="prayer-name" data-tr="İkindi" data-de="Asr">İkindi</div>
+                        <div class="prayer-hour" id="ikindi">--:--</div>
+                    </div>
+                    <div class="prayer-time">
+                        <div class="prayer-name" data-tr="Akşam" data-de="Maghrib">Akşam</div>
+                        <div class="prayer-hour" id="aksam">--:--</div>
+                    </div>
+                    <div class="prayer-time">
+                        <div class="prayer-name" data-tr="Yatsı" data-de="Isha">Yatsı</div>
+                        <div class="prayer-hour" id="yatsi">--:--</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quote of the Day -->
+            <section id="quote-section">
+                <h2 data-tr="Günün Sözü" data-de="Zitat des Tages">Günün Sözü</h2>
+                <div class="quote-container" id="daily-quote">
+                    Loading quote...
+                </div>
+            </section>
+
+            <!-- MuslimAI -->
+            <section id="ai-section">
+                <h2>MuslimAI</h2>
+                <div class="ai-chat">
+                    <textarea id="ai-input" placeholder="Ask a question..."></textarea>
+                    <button id="ai-submit">Ask MuslimAI</button>
+                    <div id="ai-response">
+                        Response will appear here...
+                    </div>
+                </div>
+            </section>
+
+            <!-- Spotify Playlists -->
+            <section id="playlist-section">
+                <h2 data-tr="Spotify Çalma Listeleri" data-de="Spotify Playlists">Spotify Çalma Listeleri</h2>
+                <div class="spotify-playlists">
+                    <!-- Add your Spotify embed codes here -->
+                    <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3Lox" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZNJXX2UeBij" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                </div>
+            </section>
+
+            <!-- YouTube Videos -->
+            <section id="video-section">
+                <h2 data-tr="Temalar için Videolar" data-de="Videos für Themen">Temalar için Videolar</h2>
+                <div class="youtube-videos">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>PathToPeace &copy; 2023 - All rights reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        // Invite Code System
+        const INVITE_CODE = "TheRehberlik";
+        const MAX_USES = 8;
+        
+        document.getElementById('invite-submit').addEventListener('click', checkInviteCode);
+        document.getElementById('invite-code').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkInviteCode();
+            }
+        });
+
+        function checkInviteCode() {
+            const enteredCode = document.getElementById('invite-code').value;
+            const errorElement = document.getElementById('invite-error');
+            
+            if (enteredCode === INVITE_CODE) {
+                // Check usage count
+                let usageCount = localStorage.getItem('inviteUsageCount') || 0;
+                usageCount = parseInt(usageCount);
+                
+                if (usageCount < MAX_USES) {
+                    // Valid code, show main content
+                    localStorage.setItem('inviteUsageCount', usageCount + 1);
+                    document.getElementById('invite-page').classList.add('hidden');
+                    document.getElementById('main-content').classList.remove('hidden');
+                    initializeApp();
+                } else {
+                    errorElement.textContent = 'Invite code has reached maximum usage limit.';
+                }
+            } else {
+                errorElement.textContent = 'Invalid invite code. Please try again.';
+            }
+        }
+
+        // Check if user already has access
+        function checkExistingAccess() {
+            // For demo purposes, we'll skip this in the example
+            // In a real implementation, you might use a more secure method
+        }
+
+        // Language System
+        let currentLanguage = 'tr';
+        
+        document.querySelectorAll('.lang-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active button
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Change language
+                currentLanguage = this.getAttribute('data-lang');
+                updateLanguage();
+            });
+        });
+
+        function updateLanguage() {
+            // Update all elements with data-tr and data-de attributes
+            document.querySelectorAll('[data-tr]').forEach(element => {
+                if (currentLanguage === 'tr') {
+                    element.textContent = element.getAttribute('data-tr');
+                } else if (currentLanguage === 'de') {
+                    element.textContent = element.getAttribute('data-de');
+                }
+            });
+            
+            // Update prayer times based on language/country
+            fetchPrayerTimes();
+        }
+
+        // Prayer Times
+        async function fetchPrayerTimes() {
+            try {
+                // For Turkey (Istanbul) - you can make this dynamic based on user location
+                const country = currentLanguage === 'tr' ? 'Turkey' : 'Germany';
+                const city = currentLanguage === 'tr' ? 'Istanbul' : 'Berlin';
+                
+                const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=2`);
+                const data = await response.json();
+                
+                if (data.code === 200) {
+                    const timings = data.data.timings;
+                    document.getElementById('imsak').textContent = formatTime(timings.Fajr);
+                    document.getElementById('gunes').textContent = formatTime(timings.Sunrise);
+                    document.getElementById('ogle').textContent = formatTime(timings.Dhuhr);
+                    document.getElementById('ikindi').textContent = formatTime(timings.Asr);
+                    document.getElementById('aksam').textContent = formatTime(timings.Maghrib);
+                    document.getElementById('yatsi').textContent = formatTime(timings.Isha);
+                }
+            } catch (error) {
+                console.error('Error fetching prayer times:', error);
+                // Fallback times
+                document.getElementById('imsak').textContent = '05:30';
+                document.getElementById('gunes').textContent = '07:00';
+                document.getElementById('ogle').textContent = '13:00';
+                document.getElementById('ikindi').textContent = '16:30';
+                document.getElementById('aksam').textContent = '19:00';
+                document.getElementById('yatsi').textContent = '20:30';
+            }
+        }
+
+        function formatTime(timeString) {
+            // Convert from "05:30 (EET)" to "05:30"
+            return timeString.split(' ')[0];
+        }
+
+        // Daily Quote
+        async function fetchDailyQuote() {
+            try {
+                const response = await fetch('https://islamic-quotes-api.vercel.app/random');
+                const data = await response.json();
+                
+                if (data && data.quote) {
+                    document.getElementById('daily-quote').textContent = data.quote;
+                }
+            } catch (error) {
+                console.error('Error fetching quote:', error);
+                document.getElementById('daily-quote').textContent = 
+                    "The best among you are those who have the best manners and character. - Prophet Muhammad (PBUH)";
+            }
+        }
+
+        // MuslimAI (Gemini API)
+        document.getElementById('ai-submit').addEventListener('click', async function() {
+            const question = document.getElementById('ai-input').value.trim();
+            const responseElement = document.getElementById('ai-response');
+            
+            if (!question) {
+                responseElement.textContent = 'Please enter a question.';
+                return;
+            }
+            
+            responseElement.textContent = 'Thinking...';
+            
+            try {
+                // In a real implementation, you would call the Gemini API here
+                // For this example, we'll use a mock response
+                
+                // This is where you would implement the actual Gemini API call
+                // const apiKey = 'YOUR_GEMINI_API_KEY'; // You would get this from Google AI Studio
+                // const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({
+                //         contents: [{
+                //             parts: [{
+                //                 text: `As a Muslim AI assistant, please respond to this question in a Islamic manner. Keep your response under 100 words. Question: ${question}`
+                //             }]
+                //         }]
+                //     })
+                // });
+                // 
+                // const data = await response.json();
+                // const aiResponse = data.candidates[0].content.parts[0].text;
+                
+                // Mock response for demonstration
+                const mockResponses = [
+                    "As Muslims, we should approach this matter with patience and prayer. Remember that Allah is the Most Merciful and He guides those who seek His guidance sincerely.",
+                    "In Islam, we are encouraged to seek knowledge and understanding. The Quran teaches us to reflect on the signs of Allah in the universe and within ourselves.",
+                    "The Prophet Muhammad (peace be upon him) taught us the importance of good character and treating others with kindness and respect, regardless of their beliefs.",
+                    "Allah says in the Quran: 'And We have not sent you, [O Muhammad], except as a mercy to the worlds.' (21:107) This reminds us of the compassionate nature of our faith."
+                ];
+                
+                const randomResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
+                responseElement.textContent = randomResponse;
+                
+            } catch (error) {
+                console.error('Error with MuslimAI:', error);
+                responseElement.textContent = 'Sorry, I am unable to respond at the moment. Please try again later.';
+            }
+        });
+
+        // Initialize the application
+        function initializeApp() {
+            fetchPrayerTimes();
+            fetchDailyQuote();
+            updateLanguage();
+            
+            // Update prayer times every minute
+            setInterval(fetchPrayerTimes, 60000);
+        }
+
+        // Check for existing access on page load
+        window.addEventListener('DOMContentLoaded', checkExistingAccess);
+    </script>
+</body>
+</html>
