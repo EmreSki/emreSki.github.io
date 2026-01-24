@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loadstring Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f1f1f1;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2a2a4a;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333366;
+        }
+        
+        h1 {
+            color: #6c63ff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #a5a5d6;
+            font-size: 1.1rem;
+        }
+        
+        .input-section {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #8a8aff;
+            font-weight: 600;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #0f0f1f;
+            border: 1px solid #444477;
+            border-radius: 8px;
+            color: #fff;
+            padding: 15px;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: 'Consolas', monospace;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.3);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(to right, #6c63ff, #8a84ff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.copy {
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+        }
+        
+        button.clear {
+            background: linear-gradient(to right, #ff6b6b, #ee5a52);
+        }
+        
+        .result-section {
+            margin-top: 30px;
+        }
+        
+        .result-box {
+            background-color: #0f0f1f;
+            border: 1px solid #444477;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 10px;
+            position: relative;
+            min-height: 100px;
+            word-break: break-all;
+            font-family: 'Consolas', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .result-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .links-section {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #333366;
+            flex-wrap: wrap;
+        }
+        
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: rgba(40, 40, 70, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            width: 200px;
+            transition: transform 0.3s ease;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(50, 50, 90, 0.7);
+        }
+        
+        .link-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .github i {
+            color: #f0f6fc;
+        }
+        
+        .paypal i {
+            color: #009cde;
+        }
+        
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #a5a5d6;
+        }
+        
+        a {
+            color: #8a8aff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        a:hover {
+            color: #b5b5ff;
+            text-decoration: underline;
+        }
+        
+        .instructions {
+            background-color: rgba(30, 30, 60, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .instructions h3 {
+            color: #8a8aff;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .links-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .link-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Loadstring Generator</h1>
+            <p class="subtitle">Convert raw links into executable loadstrings for Roblox</p>
+        </header>
+        
+        <div class="input-section">
+            <label for="rawLink"><i class="fas fa-link"></i> Paste your raw link here:</label>
+            <textarea id="rawLink" placeholder="https://raw.githubusercontent.com/username/repo/main/script.lua"></textarea>
+            
+            <div class="buttons">
+                <button id="generateBtn">
+                    <i class="fas fa-code"></i> Generate Loadstring
+                </button>
+                <button id="copyBtn" class="copy">
+                    <i class="fas fa-copy"></i> Copy to Clipboard
+                </button>
+                <button id="clearBtn" class="clear">
+                    <i class="fas fa-broom"></i> Clear All
+                </button>
+            </div>
+        </div>
+        
+        <div class="result-section">
+            <div class="result-label">
+                <label for="result"><i class="fas fa-terminal"></i> Generated Loadstring:</label>
+                <span id="charCount">0 characters</span>
+            </div>
+            <div class="result-box" id="result">
+                loadstring(game:HttpGet("PASTE_RAW_LINK_HERE"))()
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> How to use:</h3>
+            <ol>
+                <li>Paste your raw GitHub link into the input box above</li>
+                <li>Click "Generate Loadstring" to create the executable code</li>
+                <li>Click "Copy to Clipboard" to copy the generated loadstring</li>
+                <li>Paste the loadstring into Roblox Executor and run it</li>
+            </ol>
+        </div>
+        
+        <div class="links-section">
+            <div class="link-card github">
+                <i class="fab fa-github"></i>
+                <div class="link-title">GitHub</div>
+                <a href="https://github.com/EmreSki" target="_blank">github.com/EmreSki</a>
+                <p>Check out my projects</p>
+            </div>
+            
+            <div class="link-card paypal">
+                <i class="fab fa-paypal"></i>
+                <div class="link-title">Support Me</div>
+                <a href="https://paypal.me/kkavasaki" target="_blank">paypal.me/kkavasaki</a>
+                <p>Donations are appreciated!</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copy-notification" id="copyNotification">
+        <i class="fas fa-check-circle"></i> Loadstring copied to clipboard!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rawLinkInput = document.getElementById('rawLink');
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const resultBox = document.getElementById('result');
+            const charCount = document.getElementById('charCount');
+            const copyNotification = document.getElementById('copyNotification');
+            
+            // Generate loadstring when button is clicked
+            generateBtn.addEventListener('click', function() {
+                const rawLink = rawLinkInput.value.trim();
+                
+                if (!rawLink) {
+                    resultBox.textContent = 'Please enter a raw link first';
+                    resultBox.style.color = '#ff6b6b';
+                    charCount.textContent = '0 characters';
+                    return;
+                }
+                
+                // Validate URL format
+                try {
+                    new URL(rawLink);
+                } catch (e) {
+                    resultBox.textContent = 'Invalid URL format. Please enter a valid URL';
+                    resultBox.style.color = '#ff6b6b';
+                    charCount.textContent = '0 characters';
+                    return;
+                }
+                
+                // Generate the loadstring
+                const loadstring = `loadstring(game:HttpGet("${rawLink}"))()`;
+                resultBox.textContent = loadstring;
+                resultBox.style.color = '#f1f1f1';
+                
+                // Update character count
+                charCount.textContent = `${loadstring.length} characters`;
+            });
+            
+            // Copy loadstring to clipboard
+            copyBtn.addEventListener('click', function() {
+                const textToCopy = resultBox.textContent;
+                
+                // Don't copy if it's the placeholder or error message
+                if (textToCopy.includes('PASTE_RAW_LINK_HERE') || 
+                    textToCopy.includes('Please enter') || 
+                    textToCopy.includes('Invalid URL')) {
+                    showNotification('Please generate a valid loadstring first', 'error');
+                    return;
+                }
+                
+                // Use Clipboard API to copy text
+                navigator.clipboard.writeText(textToCopy).then(function() {
+                    showNotification('Loadstring copied to clipboard!', 'success');
+                }, function(err) {
+                    // Fallback method for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showNotification('Loadstring copied to clipboard!', 'success');
+                });
+            });
+            
+            // Clear all inputs and results
+            clearBtn.addEventListener('click', function() {
+                rawLinkInput.value = '';
+                resultBox.textContent = 'loadstring(game:HttpGet("PASTE_RAW_LINK_HERE"))()';
+                resultBox.style.color = '#f1f1f1';
+                charCount.textContent = '0 characters';
+                rawLinkInput.focus();
+            });
+            
+            // Show notification
+            function showNotification(message, type) {
+                copyNotification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+                copyNotification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#ff6b6b';
+                copyNotification.classList.add('show');
+                
+                setTimeout(function() {
+                    copyNotification.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Auto-generate when user pastes a link
+            rawLinkInput.addEventListener('input', function() {
+                const rawLink = rawLinkInput.value.trim();
+                
+                // Only auto-generate if it looks like a URL
+                if (rawLink && (rawLink.startsWith('http://') || rawLink.startsWith('https://'))) {
+                    try {
+                        new URL(rawLink);
+                        // Auto-generate after a short delay
+                        clearTimeout(window.autoGenerateTimeout);
+                        window.autoGenerateTimeout = setTimeout(() => {
+                            generateBtn.click();
+                        }, 500);
+                    } catch(e) {
+                        // Not a valid URL, do nothing
+                    }
+                }
+            });
+            
+            // Initialize character count
+            charCount.textContent = `${resultBox.textContent.length} characters`;
+        });
+    </script>
+</body>
+</html>
